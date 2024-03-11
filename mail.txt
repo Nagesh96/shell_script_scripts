@@ -1,0 +1,15 @@
+#!/bin/bash
+ 
+# Email subject
+subject="Test Email"
+ 
+# Email body
+body="Hello,
+ 
+This is a test email sent from a shell script."
+ 
+# List of recipients
+recipients="rnagesh825@gmail.com, nageswar1616@gmail.com"
+ 
+# Send email
+echo "$body" | mail -s "$subject" "$recipients"
