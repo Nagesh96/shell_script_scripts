@@ -1,0 +1,38 @@
+
+
+
+# yum update -y
+- install postfix, the sasl authentication framework, and mailx
+# yum -y install postfix cyrus-sasl-plain mailx
+- Restart the postfix to detect the SASL framework
+# systemctl restart postfix
+- start postfix on boot
+# systemctl enable postfix
+- open the /etc/postfix/main.cf file
+# vi /etc/postfix/main.cf
+- append the following into the file /etc/postfix/main.cf
+
+relayhost = [smtp.gmail.com]:587
+smtp_use_tls = yes
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_tls_CAfile = /etc/ssl/certs/ca-bundle.crt
+smtp_sasl_security_options = noanonymous
+smtp_sasl_tls_security_options = noanonymous
+
+- configure Postfix SASL credentials
+  Add the Gmail credentials for authentication. Create a "/etc/postfix/sasl_passwd" file
+# touch /etc/postfix/sasl_passwd
+  Add the following line to the file
+# vi touch /etc/postfix/sasl_passwd
+- Add below line
+  [smtp.gmail.com]:587 xyz:password_app   (Note: xyz is from xyz@gmail.com, password_app is from google management app password)]
+# [smtp.gmail.com]:587 nageswar825:wkui kobz sumo voxr
+- Create a Postfix lookup table from the sasl_password text file by running the following command
+# postmap /etc/postfix/sasl_passwd
+
+- sending email
+- Run the following command to send an email
+# echo "This is a test mail & Date $(date)" | mail -s "message" rnagesh825@gmail.com
+# cat /tmp/demo.html | mailx -s "$(echo -e "This is the subject\nContent-Type: text/html")" rnagesh@gmail.com   ----  if you have HTML file
+
